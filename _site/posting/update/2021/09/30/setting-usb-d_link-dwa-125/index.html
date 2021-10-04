@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Setting Usb D-link DWA-125</title>
+	<link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
+</head>
+<body>
+	<nav class="navigation">
+	
+		<a href="/" >Home</a>
+	
+		<a href="/about/" >About</a>
+	
+</nav>
+<h2>Setting Usb D-link DWA-125</h2>
+<p><p>Berikut ini langkah - langkah yang saya lakukan untuk dapat menggunakan Usb Wifi D-link DWA-125 pada linux fedora 34.</p>
+<ol>
+  <li>Buka terminal linux</li>
+  <li># wpa_passphrase “SSID” password » /etc/wpa_supplicant/wpa_supplicant.conf</li>
+  <li>$ sudo wpa_supplicant -B -Dwext -iusbwifi_kita -c /etc/wpa_supplicant/wpa_supplicant.conf</li>
+  <li>$ sudo dhclient usbwifi_kita</li>
+  <li>$ sudo resolvectl dns usbwifi_kita ip-gateway</li>
+</ol>
+
+</p>
+</body>
+</html>

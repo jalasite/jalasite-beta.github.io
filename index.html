@@ -1,0 +1,13 @@
+---
+title: Home - Jalasite.com
+layout: default
+---
+
+<ul>
+{% for item in site.posts %}
+<li>
+	<p><a href="{{ item.url }}">{{ item.title }}</a> - {{ item.date | date_to_string }} </p>
+		{{ item.post_desc }}
+</li>
+{% endfor %}
+</ul>
