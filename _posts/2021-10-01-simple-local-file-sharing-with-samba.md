@@ -195,7 +195,30 @@ Tambahkan baris perintah berikut kedalam file /etc/samba/smb.conf
 
 ### Write Permission (Ijin akses Tulis pada Folder)
 
-...tobe continued ...
+Secara default, Samba tidak diberikan izin untuk memodifikasi file apa pun dari sistem. Ubah konfigurasi keamanan sistem untuk memungkinkan Samba memodifikasi jalur sistem file apa pun yang memiliki security contex "public_content_rw_t."
+
+Untuk kenyamanan, Fedora memiliki SELinux Boolean bawaan untuk tujuan ini yang disebut: smbd_anon_write, set nilai ini ke true akan memungkinkan Samba untuk menulis di jalur sistem file apa pun yang telah disetel ke security contex public_content_rw_t.
+
+Bagi mereka yang menginginkan Samba hanya memiliki akses baca-saja di share folder publik mereka, mereka boleh mengabaikan setelan ini.
+
+Set SELinux Boolean agar mengijinkan samba untuk menulis ke filesystem dengan security context public_content_rw_t:
+
+>	# setsebool -P smbd_anon_write=1
+
+Cek nilai yang baru saja kita set:
+
+>	$ getsebool smbd_anon_write
+
+seharusnya akan menampilkan hasil:
+
+$ getsebool smbd_anon_write
+
+## Samba Services
+
+Samba Services dibagi menjadi dua bagian yang harus kita hidupkan.
+
+
+
 
 `source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/`
 

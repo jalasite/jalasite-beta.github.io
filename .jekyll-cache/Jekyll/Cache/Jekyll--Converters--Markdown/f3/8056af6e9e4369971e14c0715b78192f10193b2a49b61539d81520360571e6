@@ -1,4 +1,4 @@
-I"�)<h2 id="samba-">Samba ?</h2>
+I"�.<h2 id="samba-">Samba ?</h2>
 
 <p>Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.</p>
 
@@ -277,7 +277,29 @@ read only = No
 
 <h3 id="write-permission-ijin-akses-tulis-pada-folder">Write Permission (Ijin akses Tulis pada Folder)</h3>
 
-<p>…tobe continued …</p>
+<p>Secara default, Samba tidak diberikan izin untuk memodifikasi file apa pun dari sistem. Ubah konfigurasi keamanan sistem untuk memungkinkan Samba memodifikasi jalur sistem file apa pun yang memiliki security contex “public_content_rw_t.”</p>
+
+<p>Untuk kenyamanan, Fedora memiliki SELinux Boolean bawaan untuk tujuan ini yang disebut: smbd_anon_write, set nilai ini ke true akan memungkinkan Samba untuk menulis di jalur sistem file apa pun yang telah disetel ke security contex public_content_rw_t.</p>
+
+<p>Bagi mereka yang menginginkan Samba hanya memiliki akses baca-saja di share folder publik mereka, mereka boleh mengabaikan setelan ini.</p>
+
+<p>Set SELinux Boolean agar mengijinkan samba untuk menulis ke filesystem dengan security context public_content_rw_t:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># setsebool -P smbd_anon_write=1
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Cek nilai yang baru saja kita set:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ getsebool smbd_anon_write
+</code></pre></div>  </div>
+</blockquote>
+
+<p>seharusnya akan menampilkan hasil:</p>
+
+<p>$ getsebool smbd_anon_write</p>
 
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 

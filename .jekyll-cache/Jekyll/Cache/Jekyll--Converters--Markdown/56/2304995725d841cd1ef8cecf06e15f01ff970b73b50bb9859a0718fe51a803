@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Simple Local File - Sharing with samba</title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
-</head>
-<body>
-	<nav class="navigation">
-	
-		<a href="/" >Home</a>
-	
-		<a href="/about/" >About</a>
-	
-</nav>
-<h2>Simple Local File - Sharing with samba</h2>
-<p><h2 id="samba-">Samba ?</h2>
+I"Ð+<h2 id="samba-">Samba ?</h2>
 
 <p>Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.</p>
 
@@ -297,32 +281,6 @@ read only = No
 
 <p>Untuk kenyamanan, Fedora memiliki SELinux Boolean bawaan untuk tujuan ini yang disebut: smbd_anon_write, set nilai ini ke true akan memungkinkan Samba untuk menulis di jalur sistem file apa pun yang telah disetel ke security contex public_content_rw_t.</p>
 
-<p>Bagi mereka yang menginginkan Samba hanya memiliki akses baca-saja di share folder publik mereka, mereka boleh mengabaikan setelan ini.</p>
-
-<p>Set SELinux Boolean agar mengijinkan samba untuk menulis ke filesystem dengan security context public_content_rw_t:</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># setsebool -P smbd_anon_write=1
-</code></pre></div>  </div>
-</blockquote>
-
-<p>Cek nilai yang baru saja kita set:</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ getsebool smbd_anon_write
-</code></pre></div>  </div>
-</blockquote>
-
-<p>seharusnya akan menampilkan hasil:</p>
-
-<p>$ getsebool smbd_anon_write</p>
-
-<h2 id="samba-services">Samba Services</h2>
-
-<p>Samba Services dibagi menjadi dua bagian yang harus kita hidupkan.</p>
-
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 
-</p>
-</body>
-</html>
+:ET
