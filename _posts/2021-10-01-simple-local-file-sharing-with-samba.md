@@ -217,6 +217,179 @@ $ getsebool smbd_anon_write
 
 Samba Services dibagi menjadi dua bagian yang harus kita hidupkan.
 
+### Samba ‘smb’ Service
+
+Layanan "Server Message Block" (SMB) Samba adalah untuk berbagi file dan printer melalui jaringan lokal.
+
+### Enable and Start Services
+
+Enable and start smb and nmb services:
+
+>	# systemctl enable smb.service
+	# systemctl start smb.service
+
+Cek smb service
+
+>	# systemctl start smb.service
+
+### Test Public Sharing (localhost)
+
+Untuk mengizinkan dan menghapus akses ke dalam sharing folder publik, buat pengguna baru bernama samba_test_user, pengguna ini akan diberikan izin terlebih dahulu untuk membaca folder publik, lalu akses untuk membaca dan menulis folder publik.
+
+Proses yang sama yang ditunjukkan di sini dapat digunakan untuk memberikan akses ke share folder publik Anda kepada pengguna lain dari komputer Anda.
+
+Samba_test_user akan dibuat sebagai akun pengguna yang sudah di lock, tidak mengizinkan login ke komputer.
+
+Create 'samba_test_user', and lock the account.
+
+>	# useradd samba_test_user
+	# passwd --lock samba_test_user
+
+Set a Samba Password for this Test User (such as 'test'):
+
+>	# smbpasswd -a samba_test_user
+
+#### Test Read Only access to the Public Share:
+
+Add samba_test_user to the public_readonly group:
+
+>	# gpasswd --add samba_test_user public_readonly
+
+Login to the local Samba Service (public folder):
+
+>	$ smbclient --user=samba_test_user //localhost/public
+
+First, the ls command should succeed,
+Second, the mkdir command should not work,
+and finally, exit:
+
+>	smb: \> ls
+	smb: \> mkdir error
+	smb: \> mkdir error
+
+Remove samba_test_user from the public_readonly group:
+
+>	gpasswd --delete samba_test_user public_readonly
+
+#### Test Read and Write access to the Public Share:
+
+Add samba_test_user to the public_readwrite group:
+
+>	# gpasswd --add samba_test_user public_readwrite
+
+Login to the local Samba Service (public folder):
+
+>	$ smbclient --user=samba_test_user //localhost/public
+
+First, the ls command should succeed,
+Second, the mkdir command should work,
+Third, the rmdir command should work,
+and finally, exit:
+
+>	smb: \> ls
+	smb: \> mkdir success
+	smb: \> rmdir success
+	smb: \> exit
+
+Remove samba_test_user from the public_readwrite group:
+
+>	# gpasswd --delete samba_test_user public_readwrite
+
+Setelah pengujian selesai, untuk keamanan, nonaktifkan kemampuan samba_test_user untuk login melalui samba.
+
+Disable samba_test_user login via samba:
+
+>	# smbpasswd -d samba_test_user
+
+## Home Folder Sharing
+
+Di bagian terakhir panduan ini; Samba akan dikonfigurasi untuk berbagi User Home Folder.
+
+Misalnya: Jika bob pengguna telah terdaftar pada smbpasswd, direktori home bob /home/bob, akan menjadi share //server-name/bob.
+
+Share ini hanya akan tersedia untuk bob, dan tidak di pengguna lain.
+
+### Setup Home Folder Sharing
+
+Set SELinux Boolean allowing Samba to read and write to home folders:
+
+>	# setsebool -P samba_enable_home_dirs=1
+
+# setsebool -P samba_enable_home_dirs=1
+
+>	# setsebool -P samba_enable_home_dirs=1
+
+Expected Output:
+
+>	samba_enable_home_dirs --> on
+
+#### Add Home Sharing to the Samba Configuration
+
+Append the following to the systems smb.conf file:
+
+>	# The home folder dynamically links to the user home.
+	# If 'bob' user uses Samba:
+	# The homes section is used as the template for a new virtual share:
+
+>	# [homes]
+	# ...   (various options)
+
+>	# A virtual section for 'bob' is made:
+	# Share is modified: [homes] -> [bob]
+	# Path is added: path = /home/bob
+	# Any option within the [homes] section is appended.
+
+>	# [bob]
+	#       path = /home/bob
+	# ...   (copy of various options)
+
+>	# here is our share,
+	# same as is included in the Fedora default configuration.
+
+>	[homes]
+        comment = Home Directories
+        valid users = %S, %D%w%S
+        browseable = No
+        read only = No
+        inherit acls = Yes
+	
+
+#### Reload Samba Configuration
+
+Tell Samba to reload it's configuration:
+
+>	# smbcontrol all reload-config
+
+### Test Home Directory Sharing
+
+Switch to samba_test_user and create a folder in it's home directory:
+
+>	# su samba_test_user
+	samba_test_user:~]$ cd ~
+	samba_test_user:~]$ mkdir --verbose test_folder
+	samba_test_user:~]$ exit
+
+Enable samba_test_user to login via Samba:
+
+>	# smbpasswd -e samba_test_user
+
+Login to the local Samba Service (samba_test_user home folder):
+
+>	$ smbclient --user=samba_test_user //localhost/samba_test_user
+
+Test (all commands should complete without error):
+
+>	smb: \> ls
+	smb: \> ls test_folder
+	smb: \> rmdir test_folder
+	smb: \> mkdir home_success
+	smb: \> rmdir home_success
+	smb: \> exit
+
+Disable samba_test_user from login in via Samba:
+
+>	# smbpasswd -d samba_test_user
+
 
 
 

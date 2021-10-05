@@ -1,4 +1,4 @@
-I"�+<h2 id="samba-">Samba ?</h2>
+I"�6<h2 id="samba-">Samba ?</h2>
 
 <p>Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.</p>
 
@@ -280,6 +280,74 @@ read only = No
 <p>Secara default, Samba tidak diberikan izin untuk memodifikasi file apa pun dari sistem. Ubah konfigurasi keamanan sistem untuk memungkinkan Samba memodifikasi jalur sistem file apa pun yang memiliki security contex “public_content_rw_t.”</p>
 
 <p>Untuk kenyamanan, Fedora memiliki SELinux Boolean bawaan untuk tujuan ini yang disebut: smbd_anon_write, set nilai ini ke true akan memungkinkan Samba untuk menulis di jalur sistem file apa pun yang telah disetel ke security contex public_content_rw_t.</p>
+
+<p>Bagi mereka yang menginginkan Samba hanya memiliki akses baca-saja di share folder publik mereka, mereka boleh mengabaikan setelan ini.</p>
+
+<p>Set SELinux Boolean agar mengijinkan samba untuk menulis ke filesystem dengan security context public_content_rw_t:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># setsebool -P smbd_anon_write=1
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Cek nilai yang baru saja kita set:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ getsebool smbd_anon_write
+</code></pre></div>  </div>
+</blockquote>
+
+<p>seharusnya akan menampilkan hasil:</p>
+
+<p>$ getsebool smbd_anon_write</p>
+
+<h2 id="samba-services">Samba Services</h2>
+
+<p>Samba Services dibagi menjadi dua bagian yang harus kita hidupkan.</p>
+
+<h3 id="samba-smb-service">Samba ‘smb’ Service</h3>
+
+<p>Layanan “Server Message Block” (SMB) Samba adalah untuk berbagi file dan printer melalui jaringan lokal.</p>
+
+<h3 id="enable-and-start-services">Enable and Start Services</h3>
+
+<p>Enable and start smb and nmb services:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># systemctl enable smb.service
+# systemctl start smb.service
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Cek smb service</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># systemctl start smb.service
+</code></pre></div>  </div>
+</blockquote>
+
+<h3 id="test-public-sharing-localhost">Test Public Sharing (localhost)</h3>
+
+<p>Untuk mengizinkan dan menghapus akses ke dalam sharing folder publik, buat pengguna baru bernama samba_test_user, pengguna ini akan diberikan izin terlebih dahulu untuk membaca folder publik, lalu akses untuk membaca dan menulis folder publik.</p>
+
+<p>Proses yang sama yang ditunjukkan di sini dapat digunakan untuk memberikan akses ke share folder publik Anda kepada pengguna lain dari komputer Anda.</p>
+
+<p>Samba_test_user akan dibuat sebagai akun pengguna yang sudah di lock, tidak mengizinkan login ke komputer.</p>
+
+<p>Create ‘samba_test_user’, and lock the account.</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># useradd samba_test_user
+# passwd --lock samba_test_user
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Set a Samba Password for this Test User (such as ‘test’):</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># smbpasswd -a samba_test_user
+</code></pre></div>  </div>
+</blockquote>
 
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 

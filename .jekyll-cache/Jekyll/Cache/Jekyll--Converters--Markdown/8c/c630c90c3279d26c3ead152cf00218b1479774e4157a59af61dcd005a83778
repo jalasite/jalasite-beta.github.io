@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Simple Local File - Sharing with samba</title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
-</head>
-<body>
-	<nav class="navigation">
-	
-		<a href="/" >Home</a>
-	
-		<a href="/about/" >About</a>
-	
-</nav>
-<h2>Simple Local File - Sharing with samba</h2>
-<p><h2 id="samba-">Samba ?</h2>
+I"rK<h2 id="samba-">Samba ?</h2>
 
 <p>Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.</p>
 
@@ -507,78 +491,6 @@ smb: \&gt; exit
 </code></pre></div>  </div>
 </blockquote>
 
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># here is our share,
-# same as is included in the Fedora default configuration.
-</code></pre></div>  </div>
-</blockquote>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[homes]
-    comment = Home Directories
-    valid users = %S, %D%w%S
-    browseable = No
-    read only = No
-    inherit acls = Yes
-</code></pre></div>  </div>
-</blockquote>
-
-<h4 id="reload-samba-configuration">Reload Samba Configuration</h4>
-
-<p>Tell Samba to reload it’s configuration:</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># smbcontrol all reload-config
-</code></pre></div>  </div>
-</blockquote>
-
-<h3 id="test-home-directory-sharing">Test Home Directory Sharing</h3>
-
-<p>Switch to samba_test_user and create a folder in it’s home directory:</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># su samba_test_user
-samba_test_user:~]$ cd ~
-samba_test_user:~]$ mkdir --verbose test_folder
-samba_test_user:~]$ exit
-</code></pre></div>  </div>
-</blockquote>
-
-<p>Enable samba_test_user to login via Samba:</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># smbpasswd -e samba_test_user
-</code></pre></div>  </div>
-</blockquote>
-
-<p>Login to the local Samba Service (samba_test_user home folder):</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ smbclient --user=samba_test_user //localhost/samba_test_user
-</code></pre></div>  </div>
-</blockquote>
-
-<p>Test (all commands should complete without error):</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: \&gt; ls
-smb: \&gt; ls test_folder
-smb: \&gt; rmdir test_folder
-smb: \&gt; mkdir home_success
-smb: \&gt; rmdir home_success
-smb: \&gt; exit
-</code></pre></div>  </div>
-</blockquote>
-
-<p>Disable samba_test_user from login in via Samba:</p>
-
-<blockquote>
-  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># smbpasswd -d samba_test_user
-</code></pre></div>  </div>
-</blockquote>
-
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 
-</p>
-</body>
-</html>
+:ET

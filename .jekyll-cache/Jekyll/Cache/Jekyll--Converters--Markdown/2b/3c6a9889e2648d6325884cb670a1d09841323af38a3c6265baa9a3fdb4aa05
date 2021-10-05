@@ -1,4 +1,4 @@
-I"K/<h2 id="samba-">Samba ?</h2>
+I"VC<h2 id="samba-">Samba ?</h2>
 
 <p>Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.</p>
 
@@ -304,6 +304,137 @@ read only = No
 <h2 id="samba-services">Samba Services</h2>
 
 <p>Samba Services dibagi menjadi dua bagian yang harus kita hidupkan.</p>
+
+<h3 id="samba-smb-service">Samba ‘smb’ Service</h3>
+
+<p>Layanan “Server Message Block” (SMB) Samba adalah untuk berbagi file dan printer melalui jaringan lokal.</p>
+
+<h3 id="enable-and-start-services">Enable and Start Services</h3>
+
+<p>Enable and start smb and nmb services:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># systemctl enable smb.service
+# systemctl start smb.service
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Cek smb service</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># systemctl start smb.service
+</code></pre></div>  </div>
+</blockquote>
+
+<h3 id="test-public-sharing-localhost">Test Public Sharing (localhost)</h3>
+
+<p>Untuk mengizinkan dan menghapus akses ke dalam sharing folder publik, buat pengguna baru bernama samba_test_user, pengguna ini akan diberikan izin terlebih dahulu untuk membaca folder publik, lalu akses untuk membaca dan menulis folder publik.</p>
+
+<p>Proses yang sama yang ditunjukkan di sini dapat digunakan untuk memberikan akses ke share folder publik Anda kepada pengguna lain dari komputer Anda.</p>
+
+<p>Samba_test_user akan dibuat sebagai akun pengguna yang sudah di lock, tidak mengizinkan login ke komputer.</p>
+
+<p>Create ‘samba_test_user’, and lock the account.</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># useradd samba_test_user
+# passwd --lock samba_test_user
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Set a Samba Password for this Test User (such as ‘test’):</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># smbpasswd -a samba_test_user
+</code></pre></div>  </div>
+</blockquote>
+
+<h4 id="test-read-only-access-to-the-public-share">Test Read Only access to the Public Share:</h4>
+
+<p>Add samba_test_user to the public_readonly group:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># gpasswd --add samba_test_user public_readonly
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Login to the local Samba Service (public folder):</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ smbclient --user=samba_test_user //localhost/public
+</code></pre></div>  </div>
+</blockquote>
+
+<p>First, the ls command should succeed,
+Second, the mkdir command should not work,
+and finally, exit:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: \&gt; ls
+smb: \&gt; mkdir error
+smb: \&gt; mkdir error
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Remove samba_test_user from the public_readonly group:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gpasswd --delete samba_test_user public_readonly
+</code></pre></div>  </div>
+</blockquote>
+
+<h4 id="test-read-and-write-access-to-the-public-share">Test Read and Write access to the Public Share:</h4>
+
+<p>Add samba_test_user to the public_readwrite group:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># gpasswd --add samba_test_user public_readwrite
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Login to the local Samba Service (public folder):</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ smbclient --user=samba_test_user //localhost/public
+</code></pre></div>  </div>
+</blockquote>
+
+<p>First, the ls command should succeed,
+Second, the mkdir command should work,
+Third, the rmdir command should work,
+and finally, exit:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: \&gt; ls
+smb: \&gt; mkdir success
+smb: \&gt; rmdir success
+smb: \&gt; exit
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Remove samba_test_user from the public_readwrite group:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># gpasswd --delete samba_test_user public_readwrite
+</code></pre></div>  </div>
+</blockquote>
+
+<p>Setelah pengujian selesai, untuk keamanan, nonaktifkan kemampuan samba_test_user untuk login melalui samba.</p>
+
+<p>Disable samba_test_user login via samba:</p>
+
+<blockquote>
+  <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># smbpasswd -d samba_test_user
+</code></pre></div>  </div>
+</blockquote>
+
+<h2 id="home-folder-sharing">Home Folder Sharing</h2>
+
+<p>Di bagian terakhir panduan ini; Samba akan dikonfigurasi untuk berbagi User Home Folder.</p>
+
+<p>Misalnya: Jika bob pengguna telah terdaftar pada smbpasswd, direktori home bob /home/bob, akan menjadi share //server-name/bob.</p>
+
+<p>Share ini hanya akan tersedia untuk bob, dan tidak di pengguna lain.</p>
 
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 
