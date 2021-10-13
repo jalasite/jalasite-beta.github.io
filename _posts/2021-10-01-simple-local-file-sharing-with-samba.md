@@ -1,11 +1,11 @@
 ---
-title: "Simple Local File - Sharing with samba"
+title: "Fedora 32: Simple Local File-Sharing with Samba"
 layout: post
 categories: posting update
-post_desc: "Langkah sharing file dengan samba pada fedora 34"
+post_desc: "Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant."
 ---
 
-## Samba ?
+## What is ‘Samba’?
 
 Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.
 
