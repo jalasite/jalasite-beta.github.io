@@ -7,7 +7,7 @@ post_desc: "Sharing files with Fedora 32 using Samba is cross-platform, convenie
 
 ## What is ‘Samba’?
 
-Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.
+[Samba](https://www.samba.org/samba/) is a high-quality implementation of Server Message Block protocol (SMB). Originally developed by Microsoft for connecting windows computers together via local-area-networks, it is now extensively used for internal network communications.
 
 Apple juga mempunyai protokol sharing file sendiri yang disebut "Apple Filing Protocol (AFP)", namun belakangan ini, juga telah beralih ke SMB.
 
