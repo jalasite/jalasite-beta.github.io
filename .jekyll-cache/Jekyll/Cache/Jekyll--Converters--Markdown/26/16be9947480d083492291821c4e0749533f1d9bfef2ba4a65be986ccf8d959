@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Fedora 32: Simple Local File-Sharing with Samba</title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
-</head>
-<body>
-	<nav class="navigation">
-	
-		<a href="/" >Home</a>
-	
-		<a href="/about/" >About</a>
-	
-</nav>
-<h2>Fedora 32: Simple Local File-Sharing with Samba</h2>
-<p><p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
+I"�b<p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
 
 <h2 id="what-is-samba">What is ‘Samba’?</h2>
 
@@ -96,14 +80,14 @@
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Verify security context was correctly applied:</p>
+<p>Lihat security context yang telah dibuat:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls --directory --context /srv/public/
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Expected Output:</p>
+<p>Akan terlihat seperti dibawah ini</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unconfined_u:object_r:public_content_rw_t:s0 /srv/public/
@@ -599,6 +583,4 @@ smb: \&gt; exit
 
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 
-</p>
-</body>
-</html>
+:ET

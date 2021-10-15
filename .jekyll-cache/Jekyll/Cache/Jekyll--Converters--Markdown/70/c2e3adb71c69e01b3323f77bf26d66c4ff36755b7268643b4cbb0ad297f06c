@@ -1,25 +1,39 @@
-I"�T<h2 id="what-is-samba">What is ‘Samba’?</h2>
+I"b<p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
 
-<p>Samba adalah sebuah protokol Server Message Block (SMB). Awalnya dikembangkan oleh Microsoft untuk menghubungkan komputer windows bersama-sama melalui jaringan area lokal, sekarang banyak digunakan untuk komunikasi jaringan internal.</p>
+<h2 id="what-is-samba">What is ‘Samba’?</h2>
 
-<p>Apple juga mempunyai protokol sharing file sendiri yang disebut “Apple Filing Protocol (AFP)”, namun belakangan ini, juga telah beralih ke SMB.</p>
+<p><a href="https://www.samba.org/samba/">Samba</a> is a high-quality implementation of <a href="https://en.wikipedia.org/wiki/Server_Message_Block">Server Message Block protocol (SMB)</a>. Originally developed by Microsoft for connecting windows computers together via local-area-networks, it is now extensively used for internal network communications.</p>
 
-<p>Dalam panduan ini kita akan mencoba configurasi sederhana untuk mengaktifkan:</p>
+<p>Apple used to maintain it’s own independent file sharing called <a href="https://en.wikipedia.org/wiki/Apple_Filing_Protocol">“Apple Filing Protocol (AFP)“</a>, however in <a href="https://appleinsider.com/articles/13/06/11/apple-shifts-from-afp-file-sharing-to-smb2-in-os-x-109-mavericks">recent times</a>, it also has also switched to SMB.</p>
+
+<p>In this guide we provide the minimal instructions to enable:</p>
+
 <ul>
   <li>Public Folder Sharing (Read Only and Read Write)</li>
   <li>User Home Folder Access</li>
 </ul>
 
-<p>Catatan:</p>
-
-<p>”$  untuk prompt perintah pengguna lokal”<br />
-“# untuk prompt pengguna super”</p>
+<p><code class="language-plaintext highlighter-rouge">Note about this guide: The convention '~]$' for a local user command prompt, and '~]#' for a super user prompt will be used.</code></p>
 
 <h2 id="public-sharing-folder">Public Sharing Folder</h2>
 
+<p>Having a shared public place where authenticated users on an internal network can access files, or even modify and change files if they are given permission, can be very convenient. This part of the guide walks through the process of setting up a shared folder, ready for sharing with Samba.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Please Note: This guide assumes the public sharing folder is on a Modern Linux Filesystem; other filesystems such as NTFS or FAT32 will not work. Samba uses POSIX Access Control Lists (ACLs).</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">For those who wish to learn more about Access Control Lists, please consider reading the documentation: "Red Hat Enterprise Linux 7: System Administrator's Guide: Chapter 5. Access Control Lists", as it likewise applies to Fedora 32.</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">In General, this is only an issue for anyone who wishes to share a drive or filesystem that was created outside of the normal Fedora Installation process. (such as a external hard drive).</code></p>
+
+<p><code class="language-plaintext highlighter-rouge">It is possible for Samba to share filesystem paths that do not support POSIX ACLs, however this is out of the scope of this guide.</code></p>
+
 <h3 id="create-folder">Create Folder</h3>
 
-<p>Untuk panduan ini  kita akan menggunakan folder “/srv/public/”.</p>
+<p>For this guide the /srv/public/ folder for sharing will be used.</p>
+
+<p><code class="language-plaintext highlighter-rouge">The /srv/ directory contains site-specific data served by a Red Hat Enterprise Linux system. This directory gives users the location of data files for a particular service, such as FTP, WWW, or CVS. Data that only pertains to a specific user should go in the /home/ directory.</code></p>
+
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-filesystem#s3-filesystem-srv"><code class="language-plaintext highlighter-rouge">- Red Hat Enterprise Linux 7, Storage Administration Guide: Chapter 2. File System Structure and Maintenance: 2.1.1.8. The /srv/ Directory</code></a></p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># mkdir --verbose /srv/public
@@ -28,7 +42,11 @@
 
 <h3 id="set-filesystem-security-context">Set Filesystem Security Context</h3>
 
-<p>Untuk dapat melakukan proses baca dan tulis ke folder publik, kita akan membuat context security “public_content_rw_t”. Mereka yang hanya ingin membaca saja dapat menggunakan: “public_content_t”.</p>
+<p>To have read and write access to the public folder the public_content_rw_t security context will be used for this guide. Those wanting read only may use: public_content_t.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Label files and directories that have been created with the public_content_rw_t type to share them with read and write permissions through vsftpd. Other services, such as Apache HTTP Server, Samba, and NFS, also have access to files labeled with this type. Remember that booleans for each service must be enabled before they can write to files labeled with this type.</code></p>
+
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/chap-managing_confined_services-file_transfer_protocol#sect-Managing_Confined_Services-File_Transfer_Protocol-Types"><code class="language-plaintext highlighter-rouge">- Red Hat Enterprise Linux 7, SELinux User’s and Administrator’s Guide: Chapter 16. File Transfer Protocol: 16.1. Types: public_content_rw_t</code></a></p>
 
 <p>Tambahkan security filesystem security context:</p>
 

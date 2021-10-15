@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Fedora 32: Simple Local File-Sharing with Samba</title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
-</head>
-<body>
-	<nav class="navigation">
-	
-		<a href="/" >Home</a>
-	
-		<a href="/about/" >About</a>
-	
-</nav>
-<h2>Fedora 32: Simple Local File-Sharing with Samba</h2>
-<p><p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
+I"�]<p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
 
 <h2 id="what-is-samba">What is ‘Samba’?</h2>
 
@@ -49,7 +33,9 @@
 
 <p><code class="language-plaintext highlighter-rouge">The /srv/ directory contains site-specific data served by a Red Hat Enterprise Linux system. This directory gives users the location of data files for a particular service, such as FTP, WWW, or CVS. Data that only pertains to a specific user should go in the /home/ directory.</code></p>
 
-<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/storage_administration_guide/ch-filesystem#s3-filesystem-srv"><code class="language-plaintext highlighter-rouge">- Red Hat Enterprise Linux 7, Storage Administration Guide: Chapter 2. File System Structure and Maintenance: 2.1.1.8. The /srv/ Directory</code></a></p>
+<ul>
+  <li>Red Hat Enterprise Linux 7, Storage Administration Guide: Chapter 2. File System Structure and Maintenance: 2.1.1.8. The /srv/ Directory</li>
+</ul>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># mkdir --verbose /srv/public
@@ -58,36 +44,30 @@
 
 <h3 id="set-filesystem-security-context">Set Filesystem Security Context</h3>
 
-<p>To have read and write access to the public folder the public_content_rw_t security context will be used for this guide. Those wanting read only may use: public_content_t.</p>
+<p>Untuk dapat melakukan proses baca dan tulis ke folder publik, kita akan membuat context security “public_content_rw_t”. Mereka yang hanya ingin membaca saja dapat menggunakan: “public_content_t”.</p>
 
-<p><code class="language-plaintext highlighter-rouge">Label files and directories that have been created with the public_content_rw_t type to share them with read and write permissions through vsftpd. Other services, such as Apache HTTP Server, Samba, and NFS, also have access to files labeled with this type. Remember that booleans for each service must be enabled before they can write to files labeled with this type.</code></p>
-
-<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/chap-managing_confined_services-file_transfer_protocol#sect-Managing_Confined_Services-File_Transfer_Protocol-Types"><code class="language-plaintext highlighter-rouge">- Red Hat Enterprise Linux 7, SELinux User’s and Administrator’s Guide: Chapter 16. File Transfer Protocol: 16.1. Types: public_content_rw_t</code></a></p>
-
-<p>Add /srv/public as “public_content_rw_t” in the system’s local filesystem security context customization registry:</p>
-
-<p>Add new security filesystem security context:</p>
+<p>Tambahkan security filesystem security context:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># semanage fcontext --add --type public_content_rw_t "/srv/public(/.*)?"
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Verifiy new security filesystem security context:</p>
+<p>Lihat security filesystem security context yang telah dibuat:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># semanage fcontext --locallist --list
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Expected Output: (should include)</p>
+<p>Akan terlihat seperti dibawah ini</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/srv/public(/.*)? all files system_u:object_r:public_content_rw_t:s0
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Now that the folder has been added to the local system’s filesystem security context registry; The restorecon command can be used to ‘restore’ the context to the folder:</p>
+<p>Sekarang folder telah ditambahkan ke security context registry sistem file lokal. Perintah restorecon dapat digunakan untuk ‘mengembalikan’ context ke folder:</p>
 
 <p>Restore security context ke the /srv/public folder:</p>
 
@@ -96,14 +76,14 @@
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Verify security context was correctly applied:</p>
+<p>Lihat security context yang telah dibuat:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls --directory --context /srv/public/
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Expected Output:</p>
+<p>Akan terlihat seperti dibawah ini</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unconfined_u:object_r:public_content_rw_t:s0 /srv/public/
@@ -599,6 +579,4 @@ smb: \&gt; exit
 
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 
-</p>
-</body>
-</html>
+:ET

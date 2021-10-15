@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Fedora 32: Simple Local File-Sharing with Samba</title>
-	<link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
-</head>
-<body>
-	<nav class="navigation">
-	
-		<a href="/" >Home</a>
-	
-		<a href="/about/" >About</a>
-	
-</nav>
-<h2>Fedora 32: Simple Local File-Sharing with Samba</h2>
-<p><p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
+I"�b<p>Sharing files with Fedora 32 using Samba is cross-platform, convenient, reliable, and performant.</p>
 
 <h2 id="what-is-samba">What is ‘Samba’?</h2>
 
@@ -66,28 +50,28 @@
 
 <p>Add /srv/public as “public_content_rw_t” in the system’s local filesystem security context customization registry:</p>
 
-<p>Add new security filesystem security context:</p>
+<p>Tambahkan security filesystem security context:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># semanage fcontext --add --type public_content_rw_t "/srv/public(/.*)?"
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Verifiy new security filesystem security context:</p>
+<p>Lihat security filesystem security context yang telah dibuat:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># semanage fcontext --locallist --list
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Expected Output: (should include)</p>
+<p>Akan terlihat seperti dibawah ini</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/srv/public(/.*)? all files system_u:object_r:public_content_rw_t:s0
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Now that the folder has been added to the local system’s filesystem security context registry; The restorecon command can be used to ‘restore’ the context to the folder:</p>
+<p>Sekarang folder telah ditambahkan ke security context registry sistem file lokal. Perintah restorecon dapat digunakan untuk ‘mengembalikan’ context ke folder:</p>
 
 <p>Restore security context ke the /srv/public folder:</p>
 
@@ -96,14 +80,14 @@
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Verify security context was correctly applied:</p>
+<p>Lihat security context yang telah dibuat:</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ls --directory --context /srv/public/
 </code></pre></div>  </div>
 </blockquote>
 
-<p>Expected Output:</p>
+<p>Akan terlihat seperti dibawah ini</p>
 
 <blockquote>
   <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>unconfined_u:object_r:public_content_rw_t:s0 /srv/public/
@@ -599,6 +583,4 @@ smb: \&gt; exit
 
 <p><code class="language-plaintext highlighter-rouge">source: http://fedoramagazine.org/fedora-32-simple-local-file-sharing-with-samba/</code></p>
 
-</p>
-</body>
-</html>
+:ET
