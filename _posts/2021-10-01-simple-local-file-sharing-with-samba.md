@@ -83,20 +83,20 @@ Expected Output:
 
 ### Creating the Sharing Groups
 
-Untuk mengizinkan pengguna memiliki hak akses baca saja, atau baca dan tulis ke sharing folder, buatlah dua grup baru yang mengatur akses nya: "public_readonly dan public_readwrite".
+To allow a user to either have read only, or read and write accesses to the public share folder create two new groups that govern these privileges: public_readonly and public_readwrite.
 
-User account dapat diberikan akses untuk sekedar membaca saja, atau membaca dan menulis dengan menambahkan akun mereka ke grup masing-masing.
+User accounts can be granted access to read only, or read and write by adding their account to the respective group (and allow login via Samba creating a smb password). This process is demonstrated in the section: “Test Public Sharing (localhost)”.
 
-Membuat group public_readonly and public_readwrite:
+Create the public_readonly and public_readwrite groups:
 	
 >	# groupadd public_readonly
 	# groupadd public_readwrite
 
-Melihat group yang kita telah buat:
+Verify successful creation of groups:
 	
 >	$ getent group public_readonly public_readwrite
 
-Akan terlihat hasil nya sbb:
+Expected Output: (Note: x:1...: number will probability differ on your System)
 	
 >	public_readonly:x:1009:
 	public_readwrite:x:1010:
